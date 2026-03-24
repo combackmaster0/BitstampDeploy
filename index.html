@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bitstamp Desktop App — Download for Windows</title>
+  <meta name="description" content="Download the official Bitstamp Desktop App for Windows. Experience improved hardware compatibility, advanced scam detection, and in-built AI support." />
+  <link rel="icon" type="image/png" href="https://pbs.twimg.com/profile_images/1929632031211724801/ogNwlf3T_400x400.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       CSS RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-primary: #00e676;
+      --green-dark: #00b85c;
+      --green-hero: #0d3b2e;
+      --green-hero-deep: #081f18;
+      --green-section: #0a2e1f;
+      --green-card: #0f3d28;
+      --green-bright: #00ff7f;
+      --white: #ffffff;
+      --off-white: #f4f6f4;
+      --gray-light: #e8ede8;
+      --gray-mid: #9aab9a;
+      --text-dark: #0d1f0d;
+      --text-muted: #6b7c6b;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-pill: 999px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.18);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.28);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    /* =============================================
+       SCROLL REVEAL ANIMATION
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* =============================================
+       NAVIGATION
+    ============================================= */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    .nav.scrolled {
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-dark);
+    }
+    .nav-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+    .nav-logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .nav-logo-text span:first-child {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo-text span:last-child {
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green-dark); }
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-nav-login {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      transition: background 0.2s;
+    }
+    .btn-nav-login:hover { background: var(--gray-light); }
+    .btn-nav-download {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      background: var(--green-primary);
+      padding: 10px 20px;
+      border-radius: var(--radius-pill);
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-nav-download:hover {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .hamburger:hover { background: var(--gray-light); }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-dark);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 68px; left: 0; right: 0;
+      background: white;
+      border-bottom: 1px solid var(--gray-light);
+      padding: 24px;
+      z-index: 999;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .mobile-menu ul a {
+      display: block;
+      padding: 12px 16px;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      transition: background 0.2s;
+    }
+    .mobile-menu ul a:hover { background: var(--gray-light); }
+    .mobile-menu .btn-mobile-download {
+      display: block;
+      width: 100%;
+      text-align: center;
+      font-weight: 700;
+      background: var(--green-primary);
+      color: var(--text-dark);
+      padding: 14px;
+      border-radius: var(--radius-pill);
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    .hero {
+      background: var(--green-hero);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 68px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; right: -200px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(0,230,118,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,230,118,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-content {}
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,230,118,0.15);
+      border: 1px solid rgba(0,230,118,0.3);
+      color: var(--green-primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 24px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 8px; height: 8px;
+      background: var(--green-primary);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+    .hero-title {
+      font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .hero-title .highlight {
+      background: var(--green-primary);
+      color: var(--text-dark);
+      padding: 2px 10px;
+      border-radius: 6px;
+      display: inline;
+    }
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--green-primary);
+      color: var(--text-dark);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0,230,118,0.35);
+    }
+    .btn-primary:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,230,118,0.45);
+    }
+    .btn-primary svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      border: 2px solid rgba(255,255,255,0.3);
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.07);
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+    .hero-meta-item svg { width: 16px; height: 16px; color: var(--green-primary); }
+
+    /* Hero Mockup */
+    .hero-mockup {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .mockup-window {
+      background: #0f1a14;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,230,118,0.1);
+      overflow: hidden;
+      width: 100%;
+      max-width: 500px;
+      animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    .mockup-titlebar {
+      background: #1a2e20;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mockup-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+    }
+    .mockup-dot.red { background: #ff5f57; }
+    .mockup-dot.yellow { background: #febc2e; }
+    .mockup-dot.green { background: #28c840; }
+    .mockup-titlebar-text {
+      margin-left: 8px;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
+    }
+    .mockup-body {
+      padding: 20px;
+    }
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .mockup-logo-area {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mockup-logo-dot {
+      width: 28px; height: 28px;
+      background: var(--green-primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.75rem;
+      color: var(--text-dark);
+    }
+    .mockup-logo-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: white;
+    }
+    .mockup-balance-card {
+      background: linear-gradient(135deg, #1a3d28 0%, #0d2a1a 100%);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(0,230,118,0.15);
+    }
+    .mockup-balance-label {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .mockup-balance-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.02em;
+    }
+    .mockup-balance-change {
+      font-size: 0.75rem;
+      color: var(--green-primary);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .mockup-chart {
+      height: 60px;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+    .mockup-chart svg { width: 100%; height: 100%; }
+    .mockup-assets {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mockup-asset-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mockup-asset-row:last-child { border-bottom: none; }
+    .mockup-asset-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mockup-asset-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 800;
+    }
+    .mockup-asset-icon.btc { background: #f7931a; color: white; }
+    .mockup-asset-icon.eth { background: #627eea; color: white; }
+    .mockup-asset-icon.sol { background: #9945ff; color: white; }
+    .mockup-asset-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: white;
+    }
+    .mockup-asset-sub {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+    }
+    .mockup-asset-right { text-align: right; }
+    .mockup-asset-price {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: white;
+    }
+    .mockup-asset-pct {
+      font-size: 0.65rem;
+      color: var(--green-primary);
+      font-weight: 600;
+    }
+
+    /* Floating Badges */
+    .badge-float {
+      position: absolute;
+      background: white;
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      white-space: nowrap;
+      animation: badgeFloat 4s ease-in-out infinite;
+    }
+    .badge-float .badge-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .badge-1 {
+      top: 5%;
+      right: -5%;
+      animation-delay: 0s;
+    }
+    .badge-2 {
+      bottom: 20%;
+      left: -8%;
+      animation-delay: 1.5s;
+    }
+    .badge-3 {
+      top: 40%;
+      right: -10%;
+      animation-delay: 0.8s;
+    }
+    @keyframes badgeFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* =============================================
+       TRUST BAR
+    ============================================= */
+    .trust-bar {
+      background: var(--off-white);
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    .trust-bar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .trust-item svg {
+      width: 20px; height: 20px;
+      color: var(--green-dark);
+      flex-shrink: 0;
+    }
+    .trust-item strong { color: var(--text-dark); }
+
+    /* =============================================
+       FEATURES SECTION
+    ============================================= */
+    .features {
+      background: var(--green-section);
+      padding: 100px 24px;
+    }
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green-primary);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+    .section-title .highlight {
+      background: var(--green-primary);
+      color: var(--text-dark);
+      padding: 2px 10px;
+      border-radius: 6px;
+    }
+    .section-subtitle {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.6);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 60px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green-primary), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .feature-card:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(0,230,118,0.2);
+      transform: translateY(-4px);
+    }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-icon-wrap {
+      width: 56px; height: 56px;
+      background: rgba(0,230,118,0.12);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      font-size: 1.6rem;
+    }
+    .feature-number {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green-primary);
+      margin-bottom: 12px;
+    }
+    .feature-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .feature-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .feature-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .feature-list li::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--green-primary);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* =============================================
+       DOWNLOAD CTA SECTION
+    ============================================= */
+    .download-cta {
+      background: var(--green-hero-deep);
+      padding: 100px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .download-cta::before {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(0,230,118,0.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .download-cta-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    .download-cta-content .section-subtitle {
+      margin-bottom: 40px;
+    }
+    .download-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .btn-download-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--green-primary);
+      color: var(--text-dark);
+      font-weight: 800;
+      font-size: 1.05rem;
+      padding: 18px 32px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 28px rgba(0,230,118,0.4);
+      align-self: flex-start;
+    }
+    .btn-download-main:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(0,230,118,0.5);
+    }
+    .btn-download-main svg { width: 22px; height: 22px; flex-shrink: 0; }
+    .download-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .download-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .download-meta-item svg { width: 14px; height: 14px; color: var(--green-primary); }
+    .download-visual {
+      display: flex;
+      justify-content: center;
+    }
+    .download-steps {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 32px;
+      width: 100%;
+    }
+    .download-steps-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-num {
+      width: 32px; height: 32px;
+      background: rgba(0,230,118,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--green-primary);
+      flex-shrink: 0;
+    }
+    .step-content {}
+    .step-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .step-desc {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* =============================================
+       SECURITY SECTION
+    ============================================= */
+    .security {
+      background: var(--off-white);
+      padding: 100px 24px;
+    }
+    .security-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .security-content .section-title { color: var(--text-dark); }
+    .security-content .section-subtitle { color: var(--text-muted); }
+    .security-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .security-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid var(--gray-light);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .security-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .security-card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+    .security-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .security-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .security-visual {
+      position: relative;
+    }
+    .security-stat-card {
+      background: var(--green-hero);
+      border-radius: 20px;
+      padding: 40px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .security-stat-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: rgba(0,230,118,0.1);
+      border-radius: 50%;
+    }
+    .security-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .security-stat {
+      padding: 20px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .security-stat-value {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--green-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .security-stat-label {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.4;
+    }
+
+    /* =============================================
+       TESTIMONIALS / SOCIAL PROOF
+    ============================================= */
+    .social-proof {
+      background: white;
+      padding: 80px 24px;
+    }
+    .social-proof-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .social-proof .section-title { color: var(--text-dark); margin-bottom: 8px; }
+    .social-proof .section-subtitle { color: var(--text-muted); margin: 0 auto 56px; }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .review-card {
+      background: var(--off-white);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: left;
+      border: 1px solid var(--gray-light);
+      transition: box-shadow 0.3s;
+    }
+    .review-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); }
+    .review-stars {
+      color: #fbbf24;
+      font-size: 0.9rem;
+      margin-bottom: 14px;
+      letter-spacing: 2px;
+    }
+    .review-text {
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .review-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--green-hero);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--green-primary);
+      flex-shrink: 0;
+    }
+    .review-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .review-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* =============================================
+       FINAL CTA BANNER
+    ============================================= */
+    .final-cta {
+      background: var(--green-primary);
+      padding: 80px 24px;
+    }
+    .final-cta-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .final-cta-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .final-cta-subtitle {
+      font-size: 1rem;
+      color: rgba(0,0,0,0.6);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+    .btn-cta-dark {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--text-dark);
+      color: var(--green-primary);
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 16px 32px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-cta-dark:hover {
+      background: #1a2e1a;
+      transform: translateY(-2px);
+    }
+    .btn-cta-dark svg { width: 20px; height: 20px; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    .footer {
+      background: var(--green-hero-deep);
+      padding: 64px 24px 0;
+      color: rgba(255,255,255,0.7);
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand {}
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .footer-logo img {
+      width: 32px; height: 32px;
+      border-radius: 6px;
+    }
+    .footer-logo-text {
+      font-weight: 800;
+      font-size: 1rem;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .footer-logo-text span:last-child {
+      font-size: 0.55rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.05em;
+    }
+    .footer-brand-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      max-width: 280px;
+    }
+    .footer-socials {
+      display: flex;
+      gap: 10px;
+    }
+    .footer-social-link {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .footer-social-link:hover {
+      background: rgba(0,230,118,0.15);
+      border-color: rgba(0,230,118,0.3);
+    }
+    .footer-social-link svg { width: 16px; height: 16px; color: rgba(255,255,255,0.7); }
+    .footer-col-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 20px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--green-primary); }
+    .footer-bottom {
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom-text {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+    }
+    .footer-bottom-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-bottom-links a {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.35);
+      transition: color 0.2s;
+    }
+    .footer-bottom-links a:hover { color: rgba(255,255,255,0.7); }
+    .footer-disclaimer {
+      padding: 24px 0;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.25);
+      line-height: 1.7;
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero-mockup { order: -1; }
+      .mockup-window { max-width: 420px; }
+      .badge-1 { top: -5%; right: 5%; }
+      .badge-2 { display: none; }
+      .badge-3 { bottom: -5%; right: 2%; top: auto; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .download-cta-inner { grid-template-columns: 1fr; gap: 48px; }
+      .security-inner { grid-template-columns: 1fr; gap: 48px; }
+      .reviews-grid { grid-template-columns: 1fr 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: flex; }
+      .hero-inner { padding: 60px 0; }
+      .hero-title { font-size: 2rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .security-cards { grid-template-columns: 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .trust-bar-inner { gap: 20px; }
+      .badge-3 { display: none; }
+      .download-cta-inner { gap: 32px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .security-stat-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       NAVIGATION
+  ============================================= -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <img src="https://pbs.twimg.com/profile_images/1929632031211724801/ogNwlf3T_400x400.png" alt="Bitstamp Logo" />
+        <div class="nav-logo-text">
+          <span>Bitstamp</span>
+          <span>by Robinhood</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#download">Download</a></li>
+        <li><a href="#security">Security</a></li>
+        <li><a href="https://www.bitstamp.net/" target="_blank">Exchange</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="https://www.bitstamp.net/login/" class="btn-nav-login">Log in</a>
+        <button class="btn-nav-download" onclick="window.location.href='https://store-eu-par-4.gofile.io/download/direct/b841a851-ea30-4fb7-b4d4-3638591101f9/BitstampDesktop-Installer.msi'">
+          Download App
+        </button>
+      </div>
+
+      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#features" onclick="toggleMenu()">Features</a></li>
+      <li><a href="#download" onclick="toggleMenu()">Download</a></li>
+      <li><a href="#security" onclick="toggleMenu()">Security</a></li>
+      <li><a href="https://www.bitstamp.net/" target="_blank">Exchange</a></li>
+    </ul>
+    <button class="btn-mobile-download" onclick="window.location.href='https://store-eu-par-4.gofile.io/download/direct/b841a851-ea30-4fb7-b4d4-3638591101f9/BitstampDesktop-Installer.msi'">
+      ⬇ Download for Windows
+    </button>
+  </div>
+
+  <!-- =============================================
+       HERO
+  ============================================= -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge reveal">New Release — Windows Desktop App</div>
+        <h1 class="hero-title reveal reveal-delay-1">
+          Trade crypto with the<br />
+          <span class="highlight">Desktop App</span><br />
+          built for power users.
+        </h1>
+        <p class="hero-subtitle reveal reveal-delay-2">
+          The official Bitstamp Desktop App for Windows brings the full power of the world's longest-running crypto exchange to your desktop — with enhanced performance, AI-powered support, and next-generation security.
+        </p>
+        <div class="hero-actions reveal reveal-delay-3">
+          <button class="btn-primary" onclick="window.location.href='https://store-eu-par-4.gofile.io/download/direct/b841a851-ea30-4fb7-b4d4-3638591101f9/BitstampDesktop-Installer.msi'">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18v2H3V3zm0 16h18v2H3v-2zm8-3l-5-5 1.41-1.41L11 13.17V7h2v6.17l3.59-3.58L18 11l-5 5-2 2z"/></svg>
+            Download for Windows
+          </button>
+          <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+            Explore Features
+          </button>
+        </div>
+        <div class="hero-meta reveal reveal-delay-4">
+          <div class="hero-meta-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            <span>Verified &amp; Secure</span>
+          </div>
+          <div class="hero-meta-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+            <span>Free Download</span>
+          </div>
+          <div class="hero-meta-item">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+            <span>Windows 10 / 11</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop App Mockup -->
+      <div class="hero-mockup reveal-right">
+        <div class="mockup-window">
+          <div class="mockup-titlebar">
+            <div class="mockup-dot red"></div>
+            <div class="mockup-dot yellow"></div>
+            <div class="mockup-dot green"></div>
+            <span class="mockup-titlebar-text">Bitstamp Desktop — Portfolio</span>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-header">
+              <div class="mockup-logo-area">
+                <div class="mockup-logo-dot">B</div>
+                <span class="mockup-logo-name">Bitstamp</span>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            </div>
+            <div class="mockup-balance-card">
+              <div class="mockup-balance-label">Total Portfolio Value</div>
+              <div class="mockup-balance-value">$24,812.50</div>
+              <div class="mockup-balance-change">▲ +$1,204.30 (5.10%) today</div>
+              <div class="mockup-chart">
+                <svg viewBox="0 0 300 60" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#00e676" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="#00e676" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,50 L20,45 L40,48 L60,38 L80,35 L100,30 L120,32 L140,25 L160,20 L180,22 L200,15 L220,18 L240,10 L260,8 L280,5 L300,3" stroke="#00e676" stroke-width="2" fill="none"/>
+                  <path d="M0,50 L20,45 L40,48 L60,38 L80,35 L100,30 L120,32 L140,25 L160,20 L180,22 L200,15 L220,18 L240,10 L260,8 L280,5 L300,3 L300,60 L0,60 Z" fill="url(#chartGrad)"/>
+                </svg>
+              </div>
+            </div>
+            <div class="mockup-assets">
+              <div class="mockup-asset-row">
+                <div class="mockup-asset-left">
+                  <div class="mockup-asset-icon btc">BTC</div>
+                  <div>
+                    <div class="mockup-asset-name">Bitcoin</div>
+                    <div class="mockup-asset-sub">0.1842 BTC</div>
+                  </div>
+                </div>
+                <div class="mockup-asset-right">
+                  <div class="mockup-asset-price">$12,980.40</div>
+                  <div class="mockup-asset-pct">+3.32%</div>
+                </div>
+              </div>
+              <div class="mockup-asset-row">
+                <div class="mockup-asset-left">
+                  <div class="mockup-asset-icon eth">ETH</div>
+                  <div>
+                    <div class="mockup-asset-name">Ethereum</div>
+                    <div class="mockup-asset-sub">3.24 ETH</div>
+                  </div>
+                </div>
+                <div class="mockup-asset-right">
+                  <div class="mockup-asset-price">$6,931.57</div>
+                  <div class="mockup-asset-pct">+3.83%</div>
+                </div>
+              </div>
+              <div class="mockup-asset-row">
+                <div class="mockup-asset-left">
+                  <div class="mockup-asset-icon sol">SOL</div>
+                  <div>
+                    <div class="mockup-asset-name">Solana</div>
+                    <div class="mockup-asset-sub">54.12 SOL</div>
+                  </div>
+                </div>
+                <div class="mockup-asset-right">
+                  <div class="mockup-asset-price">$4,890.53</div>
+                  <div class="mockup-asset-pct">+4.23%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Feature Badges -->
+        <div class="badge-float badge-1">
+          <div class="badge-icon" style="background:#e8f5e9;">🛡️</div>
+          <div>
+            <div style="font-size:0.75rem;font-weight:700;color:#0d1f0d;">Scam Detection</div>
+            <div style="font-size:0.65rem;color:#6b7c6b;">AI-powered protection</div>
+          </div>
+        </div>
+        <div class="badge-float badge-2">
+          <div class="badge-icon" style="background:#e3f2fd;">🤖</div>
+          <div>
+            <div style="font-size:0.75rem;font-weight:700;color:#0d1f0d;">AI Support</div>
+            <div style="font-size:0.65rem;color:#6b7c6b;">24/7 in-built assistant</div>
+          </div>
+        </div>
+        <div class="badge-float badge-3">
+          <div class="badge-icon" style="background:#f3e5f5;">⚡</div>
+          <div>
+            <div style="font-size:0.75rem;font-weight:700;color:#0d1f0d;">Hardware Ready</div>
+            <div style="font-size:0.65rem;color:#6b7c6b;">Optimized compatibility</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       TRUST BAR
+  ============================================= -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item reveal">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        <span>Trusted since <strong>2011</strong></span>
+      </div>
+      <div class="trust-item reveal reveal-delay-1">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        <span><strong>6M+</strong> active users</span>
+      </div>
+      <div class="trust-item reveal reveal-delay-2">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+        <span><strong>$1T+</strong> traded</span>
+      </div>
+      <div class="trust-item reveal reveal-delay-3">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span>FCA &amp; MAS <strong>regulated</strong></span>
+      </div>
+      <div class="trust-item reveal reveal-delay-4">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+        <span>Live <strong>24/7 support</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       EXCLUSIVE FEATURES
+  ============================================= -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Exclusive to Desktop</div>
+        <h2 class="section-title">
+          Three features that make<br />
+          the <span class="highlight">Desktop App</span> different.
+        </h2>
+        <p class="section-subtitle">
+          The Bitstamp Desktop App for Windows is engineered with capabilities that go beyond the browser — purpose-built for serious traders who demand more.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-icon-wrap">⚡</div>
+          <div class="feature-number">Feature 01</div>
+          <h3 class="feature-title">Improved Hardware Compatibility</h3>
+          <p class="feature-desc">
+            The Desktop App is engineered to leverage your machine's full hardware potential — from multi-core processors to dedicated GPUs — ensuring buttery-smooth performance regardless of your setup.
+          </p>
+          <ul class="feature-list">
+            <li>Optimized for Intel, AMD, and ARM architectures</li>
+            <li>GPU-accelerated chart rendering for real-time data</li>
+            <li>Low-latency order execution via native OS integration</li>
+            <li>Adaptive performance scaling on any Windows PC</li>
+          </ul>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-icon-wrap">🛡️</div>
+          <div class="feature-number">Feature 02</div>
+          <h3 class="feature-title">Advanced Scam Detection</h3>
+          <p class="feature-desc">
+            Our proprietary threat-intelligence engine monitors every transaction and interaction in real time, flagging suspicious activity before it can impact your portfolio.
+          </p>
+          <ul class="feature-list">
+            <li>Real-time phishing and impersonation alerts</li>
+            <li>Suspicious address blacklist cross-referencing</li>
+            <li>Behavioural anomaly detection on your account</li>
+            <li>Instant push notifications for flagged activity</li>
+          </ul>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-icon-wrap">🤖</div>
+          <div class="feature-number">Feature 03</div>
+          <h3 class="feature-title">In-Built AI Support</h3>
+          <p class="feature-desc">
+            A fully integrated AI assistant lives inside the app — ready to answer your trading questions, explain market movements, and guide you through every feature without ever leaving the platform.
+          </p>
+          <ul class="feature-list">
+            <li>Natural language market analysis and insights</li>
+            <li>Step-by-step guided trading assistance</li>
+            <li>Instant answers to account and fee questions</li>
+            <li>Proactive portfolio recommendations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       DOWNLOAD CTA
+  ============================================= -->
+  <section class="download-cta" id="download">
+    <div class="download-cta-inner">
+      <div class="download-cta-content reveal-left">
+        <div class="section-label">Free Download</div>
+        <h2 class="section-title">
+          Get the <span class="highlight">Desktop App</span><br />
+          in under 60 seconds.
+        </h2>
+        <p class="section-subtitle">
+          Download the official Bitstamp Desktop App installer for Windows. No subscription required — just install and log in with your existing Bitstamp account.
+        </p>
+        <div class="download-actions">
+          <button class="btn-download-main" onclick="window.location.href='https://store-eu-par-4.gofile.io/download/direct/b841a851-ea30-4fb7-b4d4-3638591101f9/BitstampDesktop-Installer.msi'">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            Download for Windows (.msi)
+          </button>
+          <div class="download-meta">
+            <div class="download-meta-item">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+              Windows 10 / 11 (64-bit)
+            </div>
+            <div class="download-meta-item">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+              Digitally signed installer
+            </div>
+            <div class="download-meta-item">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+              Free — no payment needed
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="download-visual reveal-right">
+        <div class="download-steps">
+          <div class="download-steps-title">How to install</div>
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <div class="step-title">Download the installer</div>
+              <div class="step-desc">Click the download button to get the BitstampDesktop-Installer.msi file.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <div class="step-title">Run the .msi installer</div>
+              <div class="step-desc">Double-click the downloaded file and follow the on-screen setup wizard.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <div class="step-title">Log in to your account</div>
+              <div class="step-desc">Open Bitstamp Desktop and sign in with your existing Bitstamp credentials.</div>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <div class="step-title">Start trading</div>
+              <div class="step-desc">Enjoy the full Bitstamp experience with exclusive desktop-only features.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SECURITY SECTION
+  ============================================= -->
+  <section class="security" id="security">
+    <div class="security-inner section-inner">
+      <div class="security-content reveal-left">
+        <div class="section-label">Security First</div>
+        <h2 class="section-title">
+          Your assets are protected<br />
+          at every level.
+        </h2>
+        <p class="section-subtitle">
+          Bitstamp has maintained an industry-leading security record since 2011. The Desktop App inherits the full security infrastructure of the exchange, with additional layers of protection built specifically for the desktop environment.
+        </p>
+        <div class="security-cards">
+          <div class="security-card">
+            <div class="security-card-icon">🔒</div>
+            <div class="security-card-title">Cold Storage</div>
+            <div class="security-card-desc">95% of all assets held in air-gapped cold storage wallets.</div>
+          </div>
+          <div class="security-card">
+            <div class="security-card-icon">🔐</div>
+            <div class="security-card-title">End-to-End Encryption</div>
+            <div class="security-card-desc">All data in transit and at rest is AES-256 encrypted.</div>
+          </div>
+          <div class="security-card">
+            <div class="security-card-icon">📋</div>
+            <div class="security-card-title">Whitelisting</div>
+            <div class="security-card-desc">Restrict withdrawals to pre-approved wallet addresses only.</div>
+          </div>
+          <div class="security-card">
+            <div class="security-card-icon">✅</div>
+            <div class="security-card-title">2FA &amp; Biometrics</div>
+            <div class="security-card-desc">Multi-factor authentication with Windows Hello support.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="security-visual reveal-right">
+        <div class="security-stat-card">
+          <div class="security-stat-grid">
+            <div class="security-stat">
+              <div class="security-stat-value">14+</div>
+              <div class="security-stat-label">Years of uninterrupted service</div>
+            </div>
+            <div class="security-stat">
+              <div class="security-stat-value">95%</div>
+              <div class="security-stat-label">Assets in cold storage</div>
+            </div>
+            <div class="security-stat">
+              <div class="security-stat-value">0</div>
+              <div class="security-stat-label">Security incidents since 2015</div>
+            </div>
+            <div class="security-stat">
+              <div class="security-stat-value">6M+</div>
+              <div class="security-stat-label">Verified customers worldwide</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       SOCIAL PROOF
+  ============================================= -->
+  <section class="social-proof">
+    <div class="social-proof-inner">
+      <div class="section-label reveal" style="text-align:center;">What users are saying</div>
+      <h2 class="section-title reveal" style="color:var(--text-dark);">
+        Traders love the <span style="background:var(--green-primary);color:var(--text-dark);padding:2px 10px;border-radius:6px;">Desktop App</span>
+      </h2>
+      <p class="section-subtitle reveal" style="color:var(--text-muted);text-align:center;margin:0 auto 56px;">
+        Join thousands of traders who have already made the switch to the Bitstamp Desktop App for a faster, safer trading experience.
+      </p>
+      <div class="reviews-grid">
+        <div class="review-card reveal reveal-delay-1">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"The AI support feature is genuinely impressive. It answered my questions about order types instantly — no more waiting for live chat. The scam detection also flagged a suspicious address I nearly sent funds to."</p>
+          <div class="review-author">
+            <div class="review-avatar">MK</div>
+            <div>
+              <div class="review-name">Marcus K.</div>
+              <div class="review-role">Active trader since 2019</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal reveal-delay-2">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"Finally a desktop app that actually uses my hardware properly. Charts are silky smooth and the app launches in under two seconds. The hardware compatibility improvements are night and day compared to the browser."</p>
+          <div class="review-author">
+            <div class="review-avatar">SL</div>
+            <div>
+              <div class="review-name">Sophie L.</div>
+              <div class="review-role">Day trader, London</div>
+            </div>
+          </div>
+        </div>
+        <div class="review-card reveal reveal-delay-3">
+          <div class="review-stars">★★★★★</div>
+          <p class="review-text">"I've been using Bitstamp for years and this Desktop App is the best version yet. The scam detection caught a phishing attempt I didn't even notice. Feels like the exchange finally takes desktop users seriously."</p>
+          <div class="review-author">
+            <div class="review-avatar">AR</div>
+            <div>
+              <div class="review-name">Alex R.</div>
+              <div class="review-role">Crypto investor, Berlin</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FINAL CTA
+  ============================================= -->
+  <section class="final-cta">
+    <div class="final-cta-inner reveal">
+      <h2 class="final-cta-title">Ready to trade smarter?<br />Download Bitstamp Desktop today.</h2>
+      <p class="final-cta-subtitle">Free to download. No subscription. Works with your existing Bitstamp account.</p>
+      <button class="btn-cta-dark" onclick="window.location.href='https://store-eu-par-4.gofile.io/download/direct/b841a851-ea30-4fb7-b4d4-3638591101f9/BitstampDesktop-Installer.msi'">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Download for Windows — Free
+      </button>
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="https://pbs.twimg.com/profile_images/1929632031211724801/ogNwlf3T_400x400.png" alt="Bitstamp" />
+            <div class="footer-logo-text">
+              <span>Bitstamp</span>
+              <span>by Robinhood</span>
+            </div>
+          </div>
+          <p class="footer-brand-desc">
+            The world's longest-running cryptocurrency exchange. Trusted by millions since 2011. Now available as a powerful Desktop App for Windows.
+          </p>
+          <div class="footer-socials">
+            <a href="https://twitter.com/Bitstamp" target="_blank" class="footer-social-link" aria-label="Twitter">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://www.linkedin.com/company/bitstamp/" target="_blank" class="footer-social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/Bitstamp/" target="_blank" class="footer-social-link" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/bitstamp/" target="_blank" class="footer-social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Product</div>
+          <ul class="footer-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#download">Download</a></li>
+            <li><a href="#security">Security</a></li>
+            <li><a href="https://www.bitstamp.net/app/" target="_blank">Mobile App</a></li>
+            <li><a href="https://www.bitstamp.net/tradeview/" target="_blank">Tradeview</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Company</div>
+          <ul class="footer-links">
+            <li><a href="https://www.bitstamp.net/about-us/" target="_blank">Who We Are</a></li>
+            <li><a href="https://www.bitstamp.net/careers/" target="_blank">Careers</a></li>
+            <li><a href="https://www.bitstamp.net/legal/" target="_blank">Legal &amp; Privacy</a></li>
+            <li><a href="https://www.bitstamp.net/fee-schedule/" target="_blank">Fee Schedule</a></li>
+            <li><a href="https://www.bitstamp.net/faq/" target="_blank">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">Support</div>
+          <ul class="footer-links">
+            <li><a href="https://www.bitstamp.net/support/" target="_blank">Customer Support</a></li>
+            <li><a href="mailto:support@bitstamp.net">support@bitstamp.net</a></li>
+            <li><a href="https://www.bitstamp.net/api/" target="_blank">API Documentation</a></li>
+            <li><a href="https://www.bitstamp.net/markets/" target="_blank">Markets</a></li>
+            <li><a href="https://www.bitstamp.net/blog/" target="_blank">Blog</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-text">
+          © 2026 Bitstamp by Robinhood. All rights reserved.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="https://www.bitstamp.net/legal/" target="_blank">Privacy Policy</a>
+          <a href="https://www.bitstamp.net/legal/" target="_blank">Terms of Service</a>
+          <a href="https://www.bitstamp.net/cookie-policy/" target="_blank">Cookie Policy</a>
+        </div>
+      </div>
+
+      <div class="footer-disclaimer">
+        Bitstamp Ltd, 5 New Street Square, London, EC4A 3TW, United Kingdom. Crypto-asset services are provided by Bitstamp Europe S.A. (CSSF licence Z00000012), Bitstamp UK Ltd. (FCA FRN 978690), and other Bitstamp legal entities depending on client residency. Virtual currency services to US residents are provided by Bitstamp USA, Inc. (NMLS #1905429). This page is for informational purposes regarding the Bitstamp Desktop App download. Please read the general Risk Warning before investing in crypto-assets. Crypto investments carry risk and you may lose some or all of your invested capital.
+      </div>
+    </div>
+  </footer>
+
+  <!-- =============================================
+       JAVASCRIPT
+  ============================================= -->
+  <script>
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+
+    // Nav scroll effect
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      hamburger.classList.toggle('open');
+    }
+
+    // Close mobile menu on outside click
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.getElementById('hamburger');
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+        hamburger.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
